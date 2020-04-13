@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PhoneNumberAuthenticationActivity"
+    android:background="@drawable/wood"
+    android:onClick="hide_keyboard">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number"
+        app:layout_constraintBottom_toTopOf="@+id/userInputLinearLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/phoneNumberTextView"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="#fff"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumberTextView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal"
+        android:id="@+id/userInputLinearLayout">
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/ccp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/edtInputPhoneNumber"
+            android:layout_weight="5"
+            android:hint="Enter Phone Number"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center"
+            android:inputType="phone"
+            android:textStyle="italic"
+            android:textColor="#fff"
+            android:textColorHint="#fff"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sendAndResendLinearLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userInputLinearLayout"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="30dp">
+
+        <Button
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSendCodeToPhoneNumber"
+            android:text="Send Code"
+            android:textColor="#fff"
+            android:background="@drawable/rounded_rectangle_purple"
+            android:padding="10dp"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnResendCodeToPhoneNumber"
+            android:text="Resend Code"
+            android:textColor="#fff"
+            android:background="@drawable/rounded_rectangle_purple"
+            android:padding="11dp"
+            android:textStyle="bold"
+            android:layout_marginTop="15dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_marginBottom="120dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Type Code"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/edtOTP"
+            android:inputType="text"
+            android:textColorHint="#fff"
+            android:textColor="#fff"
+            android:textStyle="italic" />
+
+        <Button
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSendOTP"
+            android:text="Verify Code"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="@drawable/rounded_rectangle_purple"
+            />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
