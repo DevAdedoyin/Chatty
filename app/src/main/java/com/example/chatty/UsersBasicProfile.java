@@ -10,14 +10,14 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity {
+public class UsersBasicProfile extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_users_basic_profile);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
     }
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.sign_out_menu){
             mFirebaseAuth.signOut();
-            Intent intent = new Intent(MainActivity.this, PhoneNumberAuthenticationActivity.class);
+            Intent intent = new Intent(UsersBasicProfile.this, PhoneNumberAuthenticationActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

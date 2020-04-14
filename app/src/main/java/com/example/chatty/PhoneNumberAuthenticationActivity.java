@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.hbb20.CountryCodePicker;
 import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancydialoglib.Icon;
@@ -33,6 +34,10 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import java.util.concurrent.TimeUnit;
 
 public class PhoneNumberAuthenticationActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private String number;
+
+    private CountryCodePicker mCodePicker;
 
     private static final String TAG = "PhoneAuthActivity";
 
@@ -71,30 +76,37 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
         phoneNumber.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                try {
-                    startPhoneNumberVerification(phoneNumber.getText().toString());
-                } catch (Exception e) {
-                    if (phoneNumber.getText().toString().equals("")){
-                        FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Input Phone Number", Toast.LENGTH_SHORT, FancyToast.INFO, true).show();
-                    } else {
-                        FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Invalid Phone Number", Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    try {
+                        startPhoneNumberVerification(phoneNumber.getText().toString());
+                    } catch (Exception e) {
+                        if (phoneNumber.getText().toString().equals("")) {
+                            FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Input Phone Number", Toast.LENGTH_SHORT, FancyToast.INFO, true).show();
+                        } else {
+                            FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Invalid Phone Number", Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                        }
                     }
                 }
                 return false;
             }
         });
 
+        mCodePicker = findViewById(R.id.ccp);
+        mCodePicker.registerCarrierNumberEditText(phoneNumber);
+
         OTP = findViewById(R.id.edtOTP);
         OTP.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                try {
-                    verifyPhoneNUmberWithCode(mVerificationId, OTP.getText().toString());
-                } catch (Exception e){
-                    if (OTP.getText().toString().equals("")){
-                        FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Please Enter Token", Toast.LENGTH_SHORT, FancyToast.INFO, true).show();
-                    }else {
-                        FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Invalid Token", Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER ) {
+                    try {
+                        verifyPhoneNUmberWithCode(mVerificationId, OTP.getText().toString());
+                    } catch (Exception e) {
+                        if (OTP.getText().toString().equals("")) {
+                            FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Please Enter Token", Toast.LENGTH_SHORT, FancyToast.INFO, true).show();
+                        } else {
+                            FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Invalid Token", Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                        }
                     }
                 }
                 return false;
@@ -122,7 +134,6 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
                 } else if (e instanceof FirebaseTooManyRequestsException){
                     FancyToast.makeText(getApplicationContext(), "The SMS quota has been exceeded", FancyToast.LENGTH_SHORT, FancyToast.INFO, true).show();
                 }
-
             }
 
             @Override
@@ -142,10 +153,8 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
                         .build();
                 mVerificationId = verificationId;
                 mResendToken = token;
-
             }
         };
-
     }
 
     @Override
@@ -154,14 +163,13 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
 
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
         if (currentUser != null){
-            Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, MainActivity.class);
+            Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, UsersBasicProfile.class);
             startActivity(intent);
             finish();
         }
         if (mVerificationInProgress && validatePhoneNumber()){
             startPhoneNumberVerification(phoneNumber.getText().toString());
         }
-
     }
 
     @Override
@@ -222,7 +230,7 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
 
     private void sendToProfileInputActivity(){
         // Update this method when Profile input Activity is created
-        Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, MainActivity.class);
+        Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, UsersBasicProfile.class);
         startActivity(intent);
     }
 
@@ -232,8 +240,9 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
         if (TextUtils.isEmpty(phone_number)){
             phoneNumber.setError("Invalid Phone Number");
             return false;
+        }else {
+            return true;
         }
-        return true;
     }
 
     private void verifyPhoneNUmberWithCode(String verificationId, String code){
@@ -246,9 +255,9 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
 
         switch (view.getId()){
             case R.id.btnSendCodeToPhoneNumber:
-
+                number = mCodePicker.getFullNumberWithPlus();
                 try {
-                    startPhoneNumberVerification(phoneNumber.getText().toString());
+                    startPhoneNumberVerification(number);
                 } catch (Exception e) {
                     if (phoneNumber.getText().toString().equals("")){
                         FancyToast.makeText(PhoneNumberAuthenticationActivity.this, "Input Phone Number", Toast.LENGTH_SHORT, FancyToast.INFO, true).show();
@@ -259,8 +268,8 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
                 break;
 
             case R.id.btnResendCodeToPhoneNumber:
-
-                resendVerificationCode(phoneNumber.getText().toString(), mResendToken);
+                number = mCodePicker.getFullNumberWithPlus();
+                resendVerificationCode(number, mResendToken);
                 break;
 
             case R.id.btnSendOTP:
