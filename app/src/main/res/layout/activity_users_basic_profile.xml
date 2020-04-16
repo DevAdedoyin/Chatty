@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UsersBasicProfile"
-    android:background="@drawable/wood">
+    android:background="@drawable/wood"
+    android:onClick="hide_keyboard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +37,9 @@
             android:textColor="#fff"
             android:textStyle="italic"
             android:id="@+id/username"
-            android:contentDescription="Click to select profile picture"/>
+            android:contentDescription="Click to select profile picture"
+            android:maxLines="1"
+            android:inputType="text"/>
 
     </LinearLayout>
 
