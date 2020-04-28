@@ -7,4 +7,9 @@
         app:showAsAction="collapseActionView"
         android:id="@+id/sign_out_menu"/>
 
+    <item
+        android:title="Settings"
+        app:showAsAction="never"
+        android:id="@+id/settings"/>
+
 </menu>

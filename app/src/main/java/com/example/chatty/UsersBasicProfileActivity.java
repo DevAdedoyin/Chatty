@@ -15,8 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -24,28 +22,21 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.shashank.sony.fancydialoglib.Animation;
 import com.shashank.sony.fancydialoglib.FancyAlertDialog;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.UUID;
 
-public class UsersBasicProfile extends AppCompatActivity implements View.OnClickListener {
+public class UsersBasicProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mFirebaseAuth;
     private ImageView profilePicture;
@@ -77,6 +68,7 @@ public class UsersBasicProfile extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.profile_image:
                 selectImage();
+                break;
         }
     }
 
@@ -118,8 +110,8 @@ public class UsersBasicProfile extends AppCompatActivity implements View.OnClick
 
     private void upload_to_server() {
 
-            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            StorageReference storageReference = firebaseStorage.getReference().child("profile_pic");
+//            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+//            StorageReference storageReference = firebaseStorage.getReference().child("profile_pic");
             profilePicture.setDrawingCacheEnabled(true);
             profilePicture.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) profilePicture.getDrawable()).getBitmap();
@@ -141,13 +133,13 @@ public class UsersBasicProfile extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Log.e("ERROR", exception.getMessage());
-                        new FancyAlertDialog.Builder(UsersBasicProfile.this).setTitle("Error").setAnimation(Animation.POP).isCancellable(false).setMessage(exception.getMessage()).build();
-                        FancyToast.makeText(UsersBasicProfile.this, exception.getMessage(), Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
+                        new FancyAlertDialog.Builder(UsersBasicProfileActivity.this).setTitle("Error").setAnimation(Animation.POP).isCancellable(false).setMessage(exception.getMessage()).build();
+                        FancyToast.makeText(UsersBasicProfileActivity.this, exception.getMessage(), Toast.LENGTH_SHORT, FancyToast.ERROR, true).show();
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        FancyToast.makeText(UsersBasicProfile.this, "Profile Uploaded!!! \n Welcome " + username.getText().toString(), Toast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
+                        FancyToast.makeText(UsersBasicProfileActivity.this, "Profile Uploaded!!! \n Welcome " + username.getText().toString(), Toast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
                         tranistToUserContacts();
                     }
                 });
@@ -164,7 +156,7 @@ public class UsersBasicProfile extends AppCompatActivity implements View.OnClick
     }
 
     private void tranistToUserContacts(){
-        Intent intent = new Intent(UsersBasicProfile.this, UserContacts.class);
+        Intent intent = new Intent(UsersBasicProfileActivity.this, UserContactsAndChatsActivity.class);
         startActivity(intent);
         finish();
     }

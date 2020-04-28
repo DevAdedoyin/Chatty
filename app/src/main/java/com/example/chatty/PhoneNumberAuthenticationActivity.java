@@ -163,7 +163,7 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
 
         FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
         if (currentUser != null){
-            Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, UsersBasicProfile.class);
+            Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, UserContactsAndChatsActivity.class);
             startActivity(intent);
             finish();
         }
@@ -230,8 +230,9 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
 
     private void sendToProfileInputActivity(){
         // Update this method when Profile input Activity is created
-        Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, UsersBasicProfile.class);
+        Intent intent = new Intent(PhoneNumberAuthenticationActivity.this, UsersBasicProfileActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private boolean validatePhoneNumber(){
@@ -273,7 +274,6 @@ public class PhoneNumberAuthenticationActivity extends AppCompatActivity impleme
                 break;
 
             case R.id.btnSendOTP:
-
                 try {
                     verifyPhoneNUmberWithCode(mVerificationId, OTP.getText().toString());
                 } catch (Exception e){
